@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+
+.options {
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.link {
+  color: #fff;
+  text-decoration: none;
+}
+
+.home {
+  font-size: xxx-large;
+}

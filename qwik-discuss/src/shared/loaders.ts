@@ -1,7 +1,8 @@
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { fetchPost } from "~/db/queries/posts";
 
-export const usePostByTopicSlug = routeLoader$(async ({ params }) => {
+// eslint-disable-next-line qwik/loader-location
+export const usePostList = routeLoader$(async ({ params }) => {
   const slug = params.slug;
   const response = await fetchPost(slug || undefined);
 

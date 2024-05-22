@@ -1,10 +1,13 @@
 import { component$ } from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
 import paths from "~/helpers/paths";
-import { usePostByTopicSlug } from "~/routes/topics/[slug]";
+import { usePostList } from "~/routes";
+
+
+
 
 export const PostList = component$(() => {
-  const postListSignal = usePostByTopicSlug();
+  const postListSignal = usePostList();
 
   return (
     <>

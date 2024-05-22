@@ -13,7 +13,8 @@ import { TopicCreateComponent } from "~/components/topics/topic-create-form";
 import { TopicsList } from "~/components/topics/topics-list";
 import { db } from "~/db/db";
 import paths from "~/helpers/paths";
-export { usePostByTopicSlug } from "~/shared/loaders";
+export { usePostList } from "~/shared/loaders";
+
 
 const createTopicSchema = z.object({
   name: z

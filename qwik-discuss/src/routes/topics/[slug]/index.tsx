@@ -1,16 +1,12 @@
 import { component$ } from "@builder.io/qwik";
-import {
-  routeAction$,
-  routeLoader$,
-  useLocation,
-  z,
-  zod$,
-} from "@builder.io/qwik-city";
+import { routeAction$, useLocation, z, zod$ } from "@builder.io/qwik-city";
 import type { Session } from "@prisma/client";
 import { PostCreateForm } from "~/components/posts/post-create-form";
 import { PostList } from "~/components/posts/post-list";
 import { db } from "~/db/db";
-import { fetchPost } from "~/db/queries/posts";
+
+export { usePostByTopicSlug } from "~/shared/loaders";
+
 import paths from "~/helpers/paths";
 
 const createPostSchema = z.object({
@@ -36,7 +32,6 @@ export const useCreatePost = routeAction$(
           };
         })
       | null = sharedMap.get("session");
-    console.log("emgv sess", session);
 
     if (!session || new Date(session.expires) < new Date()) {
       return fail(403, {
@@ -79,9 +74,13 @@ export const useCreatePost = routeAction$(
       redirect(308, paths.postShow(params.slug, post.id));
     } catch (error: unknown) {
       if (error instanceof Error) {
-        return { errors: { unexpected: [(error as Error).message] } } as CreatePostErrors;
+        return {
+          errors: { unexpected: [(error as Error).message] },
+        } as CreatePostErrors;
       } else {
-        return { errors: { unexpected: ["An unknown error occurred"] } }  as CreatePostErrors;
+        return {
+          errors: { unexpected: ["An unknown error occurred"] },
+        } as CreatePostErrors;
       }
     }
   },
@@ -91,21 +90,12 @@ export const useCreatePost = routeAction$(
   }),
 );
 
-export const usePostByTopicSlug = routeLoader$(async ({ params }) => {
-  const slug = params.slug;
-  console.log('emgv params loader', params)
-  const response = await fetchPost(slug);
-  console.log("emgv loader");
-  return response;
-});
-
 export const TopicsShow = component$(() => {
   const location = useLocation();
   return (
     <div class="grid grid-cols-4 gap-4 p-4">
       <div class="col-span-3">
         <h1 class="mb-2 text-2xl font-bold">{location.params.slug}</h1>
-
         <PostList />
       </div>
       <div>

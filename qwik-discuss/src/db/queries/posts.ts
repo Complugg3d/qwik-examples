@@ -12,6 +12,12 @@ export type PostWithData = Awaited<ReturnType<typeof fetchPost>>[number];
 export function fetchPost(slug?: string) {
   if (!slug) {
     return db.post.findMany({
+      orderBy: {
+        comments: {
+          _count: "desc",
+        },
+      },
+      take: 5,
       include: {
         topic: {
           select: {
@@ -21,6 +27,7 @@ export function fetchPost(slug?: string) {
         user: {
           select: {
             name: true,
+            image: true,
           },
         },
         _count: {
@@ -31,7 +38,7 @@ export function fetchPost(slug?: string) {
       },
     });
   }
-  
+
   const result = db.post.findMany({
     where: {
       topic: {
@@ -47,6 +54,7 @@ export function fetchPost(slug?: string) {
       user: {
         select: {
           name: true,
+          image: true,
         },
       },
       _count: {

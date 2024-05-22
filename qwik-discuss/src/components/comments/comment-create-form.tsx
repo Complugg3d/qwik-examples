@@ -3,7 +3,14 @@ import { Form } from "@builder.io/qwik-city";
 import { useCreateComment } from "~/routes/topics/[slug]/posts/[id]";
 
 export const CommentCreateForm = component$(
-  ({ parentId, showOpen }: { parentId?: string; showOpen?: boolean }) => {
+  ({
+    parentId,
+    showOpen,
+  }: {
+    parentId?: string;
+    showOpen?: boolean;
+    postId?: string;
+  }) => {
     const createCommentSignal = useCreateComment();
     const formSignalRef = useSignal<HTMLFormElement>();
 
@@ -13,7 +20,6 @@ export const CommentCreateForm = component$(
       track(() => createCommentSignal.status);
 
       if (createCommentSignal.status === 200) {
-        console.log("Comment created");
         formSignalRef.value?.reset();
 
         if (!showOpen) {
@@ -22,18 +28,13 @@ export const CommentCreateForm = component$(
       }
     });
 
-    console.log("emgv parentId", parentId);
-    console.log(
-      "emgv createCommentSignal.formData?.get(comment)",
-      createCommentSignal.formData?.get("comment"),
-    );
     return (
       <>
         <button
           onClick$={() => {
             openSignal.value = !openSignal.value;
           }}
-          class="inline-block w-12 rounded border border-blue-400 text-sm font-medium text-blue-400 hover:bg-transparent hover:text-blue-600 hover:border-blue-600 focus:outline-none focus:ring active:text-blue-600"
+          class="inline-block w-12 rounded border border-blue-400 text-sm font-medium text-blue-400 hover:border-blue-600 hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-600"
         >
           Reply
         </button>
@@ -44,14 +45,8 @@ export const CommentCreateForm = component$(
             action={createCommentSignal}
             spaReset
             onSubmitCompleted$={(event) => {
-              console.log("emgv onSubmitCompleted$");
               event.preventDefault();
               if (createCommentSignal.status === 200) {
-                console.log(
-                  "emgv createCommentSignal.status if",
-                  createCommentSignal.status,
-                );
-
                 createCommentSignal.formData?.set("comment", "");
                 formSignalRef.value?.reset();
               }

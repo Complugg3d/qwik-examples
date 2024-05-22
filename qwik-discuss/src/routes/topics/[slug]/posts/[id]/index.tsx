@@ -10,8 +10,10 @@ import {
 import type { Session } from "@prisma/client";
 
 import { CommentCreateForm } from "~/components/comments/comment-create-form";
+import { CommentList } from "~/components/comments/comment-list";
 import { PostShowComponent } from "~/components/posts/post-show";
 import { db } from "~/db/db";
+import { fetchComments } from "~/db/queries/comments";
 import paths from "~/helpers/paths";
 
 export const usePostById = routeLoader$(async ({ params }) => {
@@ -101,7 +103,6 @@ export const useCreateComment = routeAction$(
       };
     }
 
-    console.log("emgv all created");
     cacheControl({
       noCache: true,
     });
@@ -109,9 +110,14 @@ export const useCreateComment = routeAction$(
   zod$({ comment: z.string(), parentId: z.string().optional() }),
 );
 
+export const useCommentsList = routeLoader$(async ({ params }) => {
+  return await fetchComments(params.id);
+});
+
 export const PostShow = component$(() => {
   const location = useLocation();
   const slug = location.params.slug;
+
   return (
     <div class="space-y-3">
       <Link class="underline decoration-solid" href={paths.topicShow(slug)}>
@@ -119,6 +125,7 @@ export const PostShow = component$(() => {
       </Link>
       <PostShowComponent />
       <CommentCreateForm showOpen />
+      <CommentList />
     </div>
   );
 });

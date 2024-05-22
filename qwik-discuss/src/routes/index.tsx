@@ -7,11 +7,13 @@ import {
   routeLoader$,
 } from "@builder.io/qwik-city";
 import type { Session } from "@prisma/client";
+import { PostList } from "~/components/posts/post-list";
 
 import { TopicCreateComponent } from "~/components/topics/topic-create-form";
 import { TopicsList } from "~/components/topics/topics-list";
 import { db } from "~/db/db";
 import paths from "~/helpers/paths";
+export { usePostByTopicSlug } from "~/shared/loaders";
 
 const createTopicSchema = z.object({
   name: z
@@ -94,6 +96,7 @@ export default component$(() => {
     <div class="grid grid-cols-4 gap-4 p-4">
       <div class="col-span-3">
         <div class="m2 text-xl">Top Posts</div>
+        <PostList />
       </div>
       <div class="border px-2 py-3 shadow">
         <div class="flex w-full justify-around">

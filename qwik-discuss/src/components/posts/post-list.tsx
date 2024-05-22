@@ -5,7 +5,6 @@ import { usePostByTopicSlug } from "~/routes/topics/[slug]";
 
 export const PostList = component$(() => {
   const postListSignal = usePostByTopicSlug();
-  console.log("emgv list client", postListSignal.value);
 
   return (
     <>

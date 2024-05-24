@@ -1,7 +1,9 @@
 import type { JSXNode } from "@builder.io/qwik";
-import { component$, useSignal } from "@builder.io/qwik";
-import { Link } from "@builder.io/qwik-city";
+import { component$, useSignal, useTask$ } from "@builder.io/qwik";
+import { Form, Link, useLocation } from "@builder.io/qwik-city";
 import paths from "~/helpers/paths";
+import { useSearchAction } from "~/routes/layout";
+
 import {
   useAuthSession,
   useAuthSignin,
@@ -13,6 +15,15 @@ export const NavbarHeader = component$(() => {
   const signIn = useAuthSignin();
   const signOut = useAuthSignout();
   const showSignal = useSignal(false);
+  const searchInput = useSignal("");
+
+  const location = useLocation();
+  const term = location.url.searchParams.get("term");
+
+  useTask$(() => {
+    searchInput.value = term || "";
+  });
+  const searchSignal = useSearchAction();
 
   let authContent: JSXNode;
   if (session.value?.user) {
@@ -32,7 +43,7 @@ export const NavbarHeader = component$(() => {
         ></div>
 
         <div
-          class={`${showSignal.value ? "visible animate-scaleIn" : "invisible animate-scaleOut delay-200"} absolute right-full origin-top-right z-50 mt-2 w-40 rounded-md bg-white shadow-lg`}
+          class={`${showSignal.value ? "visible animate-scaleIn" : "invisible animate-scaleOut delay-200"} absolute right-full z-50 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg`}
         >
           <div class="flex items-center p-4">
             <div>
@@ -85,7 +96,11 @@ export const NavbarHeader = component$(() => {
       <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           <div class="md:flex md:items-center md:gap-12">
-            <Link class="block text-teal-600" href={paths.home()}>
+            <Link
+              prefetch={false}
+              class="block text-teal-600"
+              href={paths.home()}
+            >
               <span>Home</span>
             </Link>
           </div>
@@ -93,12 +108,16 @@ export const NavbarHeader = component$(() => {
           <div class="hidden md:block">
             <nav aria-label="Global">
               <div class="flex h-full items-center">
-                <input
-                  type="text"
-                  id="search"
-                  placeholder="search"
-                  class="mt-1 h-12 w-full rounded-md border-gray-200 p-3 shadow-sm sm:text-sm"
-                />
+                <Form action={searchSignal}>
+                  <input
+                    type="text"
+                    id="term"
+                    name="term"
+                    bind:value={searchInput}
+                    placeholder="search"
+                    class="mt-1 h-12 w-full rounded-md border-gray-200 p-3 shadow-sm sm:text-sm"
+                  />
+                </Form>
               </div>
             </nav>
           </div>

@@ -4,7 +4,7 @@ import type { Session } from "@prisma/client";
 import { PostCreateForm } from "~/components/posts/post-create-form";
 import { PostList } from "~/components/posts/post-list";
 import { db } from "~/db/db";
-export { usePostList } from "~/shared/loaders";
+
 
 import paths from "~/helpers/paths";
 

@@ -1,6 +1,30 @@
 import { component$, Slot } from "@builder.io/qwik";
-import type { RequestHandler } from "@builder.io/qwik-city";
+import {
+  routeAction$,
+  z,
+  zod$,
+  type RequestHandler,
+} from "@builder.io/qwik-city";
 import { NavbarHeader } from "~/components/navbar-header/navbar-header";
+import paths from "~/helpers/paths";
+export { usePostList } from "~/shared/loaders";
+
+export const useSearchAction = routeAction$(
+  async (form, { redirect }) => {
+    const term = form.term;
+
+    if (typeof term !== "string" || !term) {
+      redirect(308, paths.home());
+    }
+
+    const search = paths.search(term);
+
+    redirect(308, search);
+  },
+  zod$({
+    term: z.string(),
+  }),
+);
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   // Control caching for this request for best performance and to reduce hosting costs:
@@ -15,9 +39,11 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 
 export default component$(() => {
   return (
-    <div class="container mx-auto px-4 max-w-6xl">
+    <div class="container mx-auto max-w-6xl px-4">
       <NavbarHeader />
-      <Slot />
+      <div class="mt-4">
+        <Slot />
+      </div>
     </div>
   );
 });

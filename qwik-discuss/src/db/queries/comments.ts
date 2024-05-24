@@ -5,7 +5,6 @@ export type CommentWithAuthor = Awaited<
 >[number];
 
 export function fetchComments(postId?: string) {
-  console.log("emgv fetchComments query", postId);
   if (!postId) {
     return db.comment.findMany({
       include: {

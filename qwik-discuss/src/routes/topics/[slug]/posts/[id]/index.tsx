@@ -120,7 +120,7 @@ export const PostShow = component$(() => {
 
   return (
     <div class="space-y-3">
-      <Link class="underline decoration-solid" href={paths.topicShow(slug)}>
+      <Link prefetch={false} class="underline decoration-solid" href={paths.topicShow(slug)}>
         {"< "}Back to {slug}
       </Link>
       <PostShowComponent />

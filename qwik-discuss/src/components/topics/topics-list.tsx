@@ -9,7 +9,7 @@ export const TopicsList = component$(() => {
   const renderedTopics = topicsListSignal.value.map((topic) => {
     return (
       <div key={topic.id}>
-        <Link href={paths.topicShow(topic.slug)}>
+        <Link prefetch={false} href={paths.topicShow(topic.slug)}>
           <span class="whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700 shadow-sm">
             {topic.slug}
           </span>

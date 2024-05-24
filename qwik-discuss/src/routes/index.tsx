@@ -13,8 +13,6 @@ import { TopicCreateComponent } from "~/components/topics/topic-create-form";
 import { TopicsList } from "~/components/topics/topics-list";
 import { db } from "~/db/db";
 import paths from "~/helpers/paths";
-export { usePostList } from "~/shared/loaders";
-
 
 const createTopicSchema = z.object({
   name: z
@@ -88,7 +86,10 @@ export const useCreateTopicAction = routeAction$(
   }),
 );
 
-export const useTopicsList = routeLoader$(async () => {
+export const useTopicsList = routeLoader$(async ({ cacheControl }) => {
+  cacheControl({
+    noCache: true,
+  });
   return await db.topic.findMany();
 });
 
@@ -103,7 +104,7 @@ export default component$(() => {
         <div class="flex w-full justify-around">
           <TopicCreateComponent />
         </div>
-        <span class="flex items-center mb-1">
+        <span class="mb-1 flex items-center">
           <span class="h-px flex-1 bg-gray-400"></span>
           <span class="shrink-0 px-6 text-gray-500">Topics</span>
           <span class="h-px flex-1 bg-gray-400"></span>

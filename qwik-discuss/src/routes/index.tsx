@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useTask$ } from "@builder.io/qwik";
 import {
   routeAction$,
   type DocumentHead,
@@ -94,6 +94,14 @@ export const useTopicsList = routeLoader$(async ({ cacheControl }) => {
 });
 
 export default component$(() => {
+  // useTask$(async () => {
+  //   await db.user.deleteMany({});
+  //   await db.post.deleteMany({});
+  //   await db.topic.deleteMany({});
+  //   await db.account.deleteMany({});
+  //   await db.verificationToken.deleteMany({});
+  //   await db.comment.deleteMany({});
+  // });
   return (
     <div class="grid grid-cols-4 gap-4 p-4">
       <div class="col-span-3">

@@ -12,6 +12,7 @@ import {
 
 export const NavbarHeader = component$(() => {
   const session = useAuthSession();
+  console.log("emgv session hook", session.value);
   const signIn = useAuthSignin();
   const signOut = useAuthSignout();
   const showSignal = useSignal(false);

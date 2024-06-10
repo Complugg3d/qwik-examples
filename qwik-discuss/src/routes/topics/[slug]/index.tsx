@@ -5,7 +5,6 @@ import { PostCreateForm } from "~/components/posts/post-create-form";
 import { PostList } from "~/components/posts/post-list";
 import { db } from "~/db/db";
 
-
 import paths from "~/helpers/paths";
 
 const createPostSchema = z.object({
@@ -28,9 +27,12 @@ export const useCreatePost = routeAction$(
             email: string;
             image: string;
             id: string;
+            role: string;
           };
         })
       | null = sharedMap.get("session");
+
+    console.log("emgv session", session);
 
     if (!session || new Date(session.expires) < new Date()) {
       return fail(403, {
